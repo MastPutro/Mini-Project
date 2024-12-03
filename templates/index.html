@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search</title>
+    <style>
+        body {
+            padding: 30px;
+            text-align: center;
+            background-color: #494949;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .row {
+            background-color: #333;
+            overflow: auto;
+            white-space: nowrap;
+        }
+        .query {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            text-decoration: none;
+        }
+        .con {
+            background-color: #333;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="con">
+        <h1>Image Similarity Search</h1>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <label for="file">Upload an image:</label>
+            <input type="file" id="file" name="file" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+
+    {% if query_image %}
+    <h2>Query Image:</h2>
+    <img src="{{ url_for('static', filename='uploaded/' + query_image) }}" alt="Query Image" style="width: 300px;">
+
+    <h2>Results:</h2>
+    <div class="row">
+        {% for path, similarity in results %}
+        <div class="query">
+            <img src="{{ url_for('static', filename=path.split('static/')[-1]) }}" alt="Result Image" style="width: 300px;">
+            <p>Similarity: {{ "%.4f"|format(similarity) }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
